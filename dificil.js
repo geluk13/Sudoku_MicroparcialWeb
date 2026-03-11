@@ -1,15 +1,25 @@
 const puzzle = [
-  [1, 0, 0, 4],
-  [0, 4, 1, 0],
-  [2, 0, 4, 3],
-  [0, 3, 2, 0]
+  [8,0,0,0,0,0,0,0,0],
+  [0,0,3,6,0,0,0,0,0],
+  [0,7,0,0,9,0,2,0,0],
+  [0,5,0,0,0,7,0,0,0],
+  [0,0,0,0,4,5,7,0,0],
+  [0,0,0,1,0,0,0,3,0],
+  [0,0,1,0,0,0,0,6,8],
+  [0,0,8,5,0,0,0,1,0],
+  [0,9,0,0,0,0,4,0,0]
 ];
 
 const solution = [
-  [1, 2, 3, 4],
-  [3, 4, 1, 2],
-  [2, 1, 4, 3],
-  [4, 3, 2, 1]
+  [8,1,2,7,5,3,6,4,9],
+  [9,4,3,6,8,2,1,7,5],
+  [6,7,5,4,9,1,2,8,3],
+  [1,5,4,2,3,7,8,9,6],
+  [3,6,9,8,4,5,7,2,1],
+  [2,8,7,1,6,9,5,3,4],
+  [5,2,1,9,7,4,3,6,8],
+  [4,3,8,5,2,6,9,1,7],
+  [7,9,6,3,1,8,4,5,2]
 ];
 
 const board = document.getElementById("board");
@@ -19,8 +29,8 @@ const checkBtn = document.getElementById("check-btn");
 function createBoard() {
   board.innerHTML = "";
 
-  for (let row = 0; row < 4; row++) {
-    for (let col = 0; col < 4; col++) {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
       const input = document.createElement("input");
       input.type = "text";
       input.maxLength = 1;
@@ -32,19 +42,14 @@ function createBoard() {
         input.value = puzzle[row][col];
         input.disabled = true;
         input.classList.add("fixed");
-      } else {
-        input.addEventListener("input", () => {
-          input.value = input.value.replace(/[^1-4]/g, "");
-        });
       }
 
-      if ((col + 1) % 2 === 0 && col !== 3) {
-        input.classList.add("border-right");
-      }
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^1-9]/g, "");
+      });
 
-      if ((row + 1) % 2 === 0 && row !== 3) {
-        input.classList.add("border-bottom");
-      }
+      if ((col + 1) % 3 === 0 && col !== 8) input.classList.add("border-right");
+      if ((row + 1) % 3 === 0 && row !== 8) input.classList.add("border-bottom");
 
       board.appendChild(input);
     }
@@ -60,19 +65,18 @@ function verifyBoard() {
   let ok = true;
 
   cells.forEach((cell) => {
-    const row = Number(cell.dataset.row);
-    const col = Number(cell.dataset.col);
-    const value = Number(cell.value);
+    const row = parseInt(cell.dataset.row);
+    const col = parseInt(cell.dataset.col);
 
-    if (value !== solution[row][col]) {
+    if (parseInt(cell.value) !== solution[row][col]) {
       ok = false;
     }
   });
 
   if (ok) {
-    window.location.href = "./ganaste.html";
+    window.location.href = "ganaste.html";
   } else {
-    window.location.href = "./perdiste.html";
+    window.location.href = "perdiste.html";
   }
 }
 
